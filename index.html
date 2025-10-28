@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Business Assessment</title>
+        <link rel="stylesheet" href="./styles.css" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div id="app">
+            <aside class="sidebar" aria-label="Sections">
+                <div class="brand">
+                    <div>
+                        <p class="muted">Select the tiles to answer</p>
+                    </div>
+                </div>
+                <nav id="sectionList" class="section-list" role="navigation"></nav>
+                <div class="sidebar-footer">
+                    <button id="resetBtn" class="btn ghost" type="button">Reset answers</button>
+                </div>
+            </aside>
+
+            <main class="content" id="content" role="main">
+                <header class="topbar">
+                    <select id="catalystSelect" aria-label="Catalyst">
+                        <option value="Crisis">Crisis</option>
+                        <option value="Economic Uncertainty">Economic Uncertainty</option>
+                        <option value="New Opportunity">New Opportunity</option>
+                        <option value="Steady Growth" selected>Steady Growth</option>
+                        <option value="Lifestyle Change">Lifestyle Change</option>
+                        <option value="Operational Adjustments">Operational Adjustments</option>
+                      </select>
+                    <h1 id="sbdc-heading">SBDC</h1>
+                    <div class="progress-wrap">
+                        <div id="progressLabel" class="progress-label">0% complete</div>
+                        <div class="progress">
+                            <div id="progressBar" class="progress-bar" style="width:0%"></div>
+                        </div>
+                    </div>
+                </header>
+
+                <section id="questionArea" class="question-area" aria-live="polite">
+                    <div class="loading">Loading…</div>
+                </section>
+
+                <footer class="bottombar">
+                    <div class="nav-buttons">
+                        <button id="prevBtn" class="btn" type="button" disabled>← Back</button>
+                        <button id="nextBtn" class="btn primary" type="button">Next →</button>
+                    </div>
+                    <div class="submit-wrap">
+                        <button id="submitBtn" class="btn success" type="button">Submit</button>
+                        <span id="submitStatus" class="muted"></span>
+                    </div>
+                </footer>
+            </main>
+        </div>
+
+        <script>
+            window.APP_CONFIG = {
+                submitUrl: "/api/assessment/submit",      
+                prefillUrl: null,                          
+                dataPaths: {
+                    questions: "./questions.json",
+                    functionalAreas: "./functional_area.json"
+                }
+            };
+        </script>
+        <script src="./app.js" defer></script>
+    </body>
+</html>
