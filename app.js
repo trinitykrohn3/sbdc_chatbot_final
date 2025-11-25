@@ -1,14 +1,12 @@
 (function () {
     const cfg = window.APP_CONFIG;
 
-    // --- State ---
     const data = { sections: [], flat: [] };
     const indexById = new Map();
     let currentIndex = 0;
     let answers = {};
     let prefilled = null;
 
-    // --- DOM ---
     const sectionList = document.getElementById("sectionList");
     const questionArea = document.getElementById("questionArea");
     const progressBar = document.getElementById("progressBar");
@@ -19,7 +17,6 @@
     const submitStatus = document.getElementById("submitStatus");
     const resetBtn = document.getElementById("resetBtn");
 
-    // --- Utils ---
     const storageKey = "assessment_answers_v1";
     function saveLocal() {
         localStorage.setItem(storageKey, JSON.stringify(answers));
@@ -35,7 +32,6 @@
         return Math.max(min, Math.min(max, n));
     }
 
-    // -- Progress Bar --
     function computeProgress() {
         const total = data.flat.length;
         const done = Object.keys(answers).length;
@@ -44,7 +40,6 @@
         progressLabel.textContent = `${pct}% complete (${done}/${total})`;
     }
 
-    // --- Renderers ---
     function renderSections() {
         sectionList.innerHTML = "";
         data.sections.forEach((sec) => {
@@ -124,7 +119,6 @@
         updateNavButtons();
     }
 
-    // --- Navigation ---
     prevBtn.addEventListener("click", () => {
         currentIndex = clamp(currentIndex - 1, 0, data.flat.length - 1);
         updateUI();
@@ -141,7 +135,6 @@
         }
     });
 
-    // --- Submit ---
     submitBtn.addEventListener("click", async () => {
         submitStatus.textContent = "Submitting…";
         submitBtn.disabled = true;
@@ -166,13 +159,12 @@
             if (out && out.redirect) window.location.assign(out.redirect);
         } catch (err) {
             console.error(err);
-            submitStatus.textContent = "Could not submit (check backend URL). Saved locally.";
+            submitStatus.textContent = "Could not submit";
         } finally {
             submitBtn.disabled = false;
         }
     });
 
-    // --- Data load ---
     async function fetchJSON(path) {
         const res = await fetch(path);
         if (!res.ok) throw new Error(`Failed to load ${path}`);
