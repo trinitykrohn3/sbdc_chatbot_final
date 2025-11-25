@@ -45,6 +45,9 @@
                     <div class="loading">Loading…</div>
                 </section>
 
+                <section id="results" class="results hidden"></section>
+
+
                 <footer class="bottombar">
                     <div class="nav-buttons">
                         <button id="prevBtn" class="btn" type="button" disabled>← Back</button>
@@ -60,11 +63,11 @@
 
         <script>
             window.APP_CONFIG = {
-                submitUrl: "/api/assessment/submit",      
+                submitUrl: "http://127.0.0.1:8000/assess",      
                 prefillUrl: null,                          
                 dataPaths: {
                     questions: "./questions.json",
-                    functionalAreas: "./functional_area.json"
+                    functionalAreas: "./functional_area1.json"
                 }
             };
         </script>
