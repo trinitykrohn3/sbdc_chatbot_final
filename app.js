@@ -59,10 +59,35 @@
         });
     }
 
+    async function downloadPDF(conversation) {
+        const response = await fetch("http://localhost:8000/export-pdf", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ messages: conversation })
+        });
+      
+        if (!response.ok) {
+          console.error("Failed to download PDF");
+          return;
+        }
+      
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+      
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "conversation.pdf";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      }
+
     function renderQuestion() {
         const q = data.flat[currentIndex];
         if (!q) {
-            questionArea.innerHTML = '<div class="loading">No question found.</div>';
+            questionArea.innerHTML = '<div class="loading">No questions found.</div>';
             return;
         }
 
@@ -138,54 +163,53 @@
         }
     });
 
-    // ⭐ NEW: display results nicely on screen
-    function showResults(out) {
-        const resultsEl = document.getElementById("results");
-        resultsEl.classList.remove("hidden");
+function showResults(out) {
+    const resultsEl = document.getElementById("results");
+    resultsEl.classList.remove("hidden");
 
-        // Build recommendations block
-        let recommendationsHTML = "";
-        if (Array.isArray(out.recommendations)) {
-            recommendationsHTML = out.recommendations
-                .map(rec => `<div class="recommendation">${rec}</div>`)
-                .join("");
-        } else {
-            recommendationsHTML = `<p>${out.recommendations}</p>`;
-        }
-
-        const prioritiesHTML = out.priority_categories
-            .map(cat => `<li>${cat}</li>`)
+    let recommendationsHTML = "";
+    if (Array.isArray(out.recommendations)) {
+        recommendationsHTML = out.recommendations
+            .map(rec => `<div class="recommendation">${rec}</div>`)
             .join("");
+    } else {
+        recommendationsHTML = `<p>${out.recommendations}</p>`;
+    }
+
+    const prioritiesHTML = out.priority_categories
+        .map(cat => `<li>${cat}</li>`)
+        .join("");
+
 
         resultsEl.innerHTML = `
-            <h2>Assessment Results</h2>
+        <h2>Assessment Results</h2>
 
-            <div class="result-block">
-                <h3>Overall Tier</h3>
-                <p><strong>${out.overall_tier}</strong></p>
-            </div>
+        <button id="downloadPdfBtn" type="button">
+            Download PDF
+        </button>
 
-            <div class="result-block">
-                <h3>Overall Score</h3>
-                <p>${out.overall_score}</p>
-            </div>
+        <div class="result-block">
+            <h3>Overall Tier</h3>
+            <p><strong>${out.overall_tier}</strong></p>
+        </div>
 
-            <div class="result-block">
-                <h3>Priority Categories</h3>
-                <ul>${prioritiesHTML}</ul>
-            </div>
+        <div class="result-block">
+            <h3>Overall Score</h3>
+            <p>${out.overall_score}</p>
+        </div>
 
-            <div class="result-block">
-                <h3>Recommendations</h3>
-                ${recommendationsHTML}
-            </div>
 
-            <div class="result-block">
-                <h3>Tier Distribution</h3>
-                <pre>${JSON.stringify(out.tier_distribution, null, 2)}</pre>
-            </div>
-        `;
-    }
+        <div class="result-block">
+            <h3>Recommendations</h3>
+            ${recommendationsHTML}
+        </div>
+
+    `;
+
+}
+
+
+    
 
     submitBtn.addEventListener("click", async () => {
         submitStatus.textContent = "Submitting…";
@@ -210,12 +234,10 @@
 
             const out = await res.json().catch(() => ({}));
 
-            // Log to console
             console.log("Assessment response:", out);
 
             submitStatus.textContent = "Saved ✓";
 
-            // ⭐ Show results in UI
             showResults(out);
 
         } catch (err) {
