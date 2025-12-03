@@ -12,12 +12,13 @@
         <div id="app">
             <aside class="sidebar" aria-label="Sections">
                 <div class="brand">
-                    <div>
-                        <p class="muted">Select the tiles to answer</p>
-                    </div>
+                    
                 </div>
                 <nav id="sectionList" class="section-list" role="navigation"></nav>
-                <div class="sidebar-footer">
+                <div style="display: flex; justify-content: center;">
+                    <p class="muted">Select the tiles to answer</p>
+                </div>
+                <div class="sidebar-footer" style="display: flex; justify-content: center;">
                     <button id="resetBtn" class="btn ghost" type="button">Reset answers</button>
                 </div>
             </aside>
@@ -54,8 +55,9 @@
                         <button id="nextBtn" class="btn primary" type="button">Next →</button>
                     </div>
                     <div class="submit-wrap">
-                        <button id="submitBtn" class="btn success" type="button">Submit</button>
                         <span id="submitStatus" class="muted"></span>
+                        <button id="submitBtn" class="btn success" type="button">Submit</button>
+                        
                     </div>
                 </footer>
             </main>
@@ -70,7 +72,9 @@
                     functionalAreas: "./functional_area.json"
                 }
             };
+
         </script>
         <script src="./app.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     </body>
 </html>
