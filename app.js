@@ -74,7 +74,7 @@
                 overall_score: lastAssessmentResult.overall_score,
                 overall_tier: lastAssessmentResult.overall_tier,
                 priority_categories: lastAssessmentResult.priority_categories,
-                category_details: lastAssessmentResult.category_details,
+                category_scores: lastAssessmentResult.category_scores,
                 recommendations: lastAssessmentResult.recommendations
             };
 
