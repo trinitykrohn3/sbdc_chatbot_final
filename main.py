@@ -204,3 +204,5 @@ async def export_pdf(payload: Dict[str, Any]):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"PDF generation failed: {str(e)}")
 
+app.mount("/", StaticFiles(directory=".", html=True), name="static")
+
