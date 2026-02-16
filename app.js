@@ -69,13 +69,20 @@
         try {
             const catalyst = document.getElementById("catalystSelect").value;
             
+            // Prepare answers in the format needed for the PDF
+            const formattedAnswers = Object.entries(answers).map(([question_id, value]) => ({
+                question_id: question_id,
+                score: parseInt(value, 10)
+            }));
+            
             const pdfData = {
                 catalyst: catalyst,
                 overall_score: lastAssessmentResult.overall_score,
                 overall_tier: lastAssessmentResult.overall_tier,
                 priority_categories: lastAssessmentResult.priority_categories,
                 category_scores: lastAssessmentResult.category_scores,
-                recommendations: lastAssessmentResult.recommendations
+                recommendations: lastAssessmentResult.recommendations,
+                answers: formattedAnswers  // Add answers to the payload
             };
 
             const response = await fetch("export-pdf", {
