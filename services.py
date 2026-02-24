@@ -40,9 +40,7 @@ class AssessmentService:
         with open(path, "r") as f:
             return json.load(f)
 
-    # ---------------------------
     # SCORE CALCULATION
-    # ---------------------------
     def calculate_scores(self, response: AssessmentResponse) -> AssessmentReport:
         scores_by_area = {
             area: {"total_score": 0, "answered": 0, "total": len(questions)}
@@ -95,9 +93,8 @@ class AssessmentService:
             priority_categories=priority_categories,
         )
 
-    # ---------------------------
+
     # RECOMMENDATION GENERATION
-    # ---------------------------
     def generate_recommendations(self, result: AssessmentReport, catalyst: str) -> str:
         # Normalize catalyst name to match JSON keys
         catalyst_key = catalyst.replace(" ", "_")
@@ -241,9 +238,7 @@ class AssessmentService:
         except Exception as e:
             return f"Error generating recommendations: {e}"
 
-    # ---------------------------
-    # UTILITIES
-    # ---------------------------
+
     def _get_tier(self, score: float) -> str:
         bounds = self.rules["tier_boundaries"]
         if score <= bounds["Responding"][1]:
